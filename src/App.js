@@ -7,6 +7,12 @@ import UserManagement from './P040-UserManagement.jsx';
 import Timesheet from './P060-Timesheet (1).jsx';
 import ResourceAllocation from './P090-ResourceAllocation (1).jsx';
 import ResourceRequest from './ResourceRequest.jsx';
+import Login from './P000-Login.jsx';
+import Notifications from './P070-Notifications.jsx';
+import Settings from './P110-Settings (1).jsx';
+import RolePermission from './P060-RolePermission.jsx';
+import HROnboarding from './P100-HROnboarding.jsx';
+import InvoiceRequest from './P-INV-InvoiceRequest (1).jsx';
 
 const appContainerStyle = {
   fontFamily: 'Arial, sans-serif',
@@ -74,7 +80,13 @@ function App() {
     { id: 'users', name: 'User Management', component: UserManagement },
     { id: 'timesheet', name: 'Timesheet', component: Timesheet },
     { id: 'resources', name: 'Resource Allocation', component: ResourceAllocation },
-    { id: 'request', name: 'Resource Request', component: ResourceRequest }
+    { id: 'request', name: 'Resource Request', component: ResourceRequest },
+    { id: 'login', name: 'Login', component: Login },
+    { id: 'notifications', name: 'Notifications', component: Notifications },
+    { id: 'settings', name: 'Settings', component: Settings },
+    { id: 'roles', name: 'Role Permission', component: RolePermission },
+    { id: 'hr', name: 'HR Onboarding', component: HROnboarding },
+    { id: 'invoice', name: 'Invoice Request', component: InvoiceRequest }
   ];
 
   const ActiveComponent = components.find(c => c.id === activeComponent)?.component;
