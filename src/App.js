@@ -16,42 +16,87 @@ import InvoiceRequest from './P-INV-InvoiceRequest (1).jsx';
 
 const appContainerStyle = {
   fontFamily: 'Arial, sans-serif',
-  backgroundColor: '#f5f5f5',
+  backgroundColor: '#2c3e50',
   minHeight: '100vh',
-  padding: '10px'
+  padding: '10px',
+  margin: 0,
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column'
 };
 
 
 const navStyle = {
-  display: 'flex',
-  gap: '10px',
-  justifyContent: 'center',
-  flexWrap: 'wrap',
-  marginBottom: '20px'
+  display: "flex",
+  justifyContent: "center",
+  marginBottom: "20px",
+  width: "100%"
 };
 
-const buttonStyle = {
-  padding: '10px 20px',
-  backgroundColor: '#007bff',
-  color: 'white',
-  border: 'none',
-  borderRadius: '5px',
+const dropdownStyle = {
+  padding: "10px 18px",
+  fontSize: "14px",
+  fontWeight: "600",
+  border: "none",
+  borderRadius: "8px",
+  background: "linear-gradient(90deg,#6D5DF6,#8A63F7)",
+  color: "#ffffff",
+  cursor: "pointer",
+  minWidth: "180px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "6px",
+  boxShadow: "0 4px 10px rgba(0,0,0,0.15)"
+};
+
+const dropdownContainerStyle = {
+  position: 'relative',
+  display: 'inline-block'
+};
+
+const dropdownListStyle = {
+  position: 'absolute',
+  top: '100%',
+  left: 0,
+  right: 0,
+  background: '#6D5DF6',
+  borderRadius: '8px',
+  boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
+  zIndex: 1000,
+  marginTop: '4px',
+  overflow: 'hidden'
+};
+
+const dropdownItemStyle = {
+  padding: '10px 18px',
+  color: '#ffffff',
   cursor: 'pointer',
   fontSize: '14px',
-  fontWeight: '500'
+  fontWeight: '600',
+  transition: 'background-color 0.2s ease',
+  border: 'none',
+  background: 'transparent'
 };
 
-const buttonActiveStyle = {
-  ...buttonStyle,
-  backgroundColor: '#0056b3'
+const dropdownItemHoverStyle = {
+  ...dropdownItemStyle,
+  backgroundColor: 'rgba(255,255,255,0.1)'
+};
+
+const dropdownOptionsStyle = {
+  background: '#6D5DF6',
+  color: "#ffffff"
 };
 
 const componentContainerStyle = {
-  backgroundColor: '#fff',
+  backgroundColor: '#6D5DF6',
   borderRadius: '8px',
   boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
   overflow: 'hidden',
-  minHeight: '600px'
+  minHeight: '600px',
+  width: '100%',
+  maxWidth: 'none'
 };
 
 const componentTitleStyle = {
@@ -71,6 +116,7 @@ const componentWrapperStyle = {
 
 function App() {
   const [activeComponent, setActiveComponent] = useState('lifecycle5');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const components = [
     { id: 'lifecycle5', name: 'Lifecycle Modal', component: LifecycleModal5 },
@@ -90,28 +136,44 @@ function App() {
   ];
 
   const ActiveComponent = components.find(c => c.id === activeComponent)?.component;
+  const selectedComponent = components.find(c => c.id === activeComponent)?.name || 'Select a page...';
+
+  const handleSelect = (componentId) => {
+    setActiveComponent(componentId);
+    setDropdownOpen(false);
+  };
 
   return (
     <div style={appContainerStyle}>
       <div style={navStyle}>
-        {components.map(comp => (
+        <div style={dropdownContainerStyle}>
           <button
-            key={comp.id}
-            style={activeComponent === comp.id ? buttonActiveStyle : buttonStyle}
-            onClick={() => setActiveComponent(comp.id)}
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            style={dropdownStyle}
           >
-            {comp.name}
+            {selectedComponent}
+            <span style={{marginLeft: '6px'}}>▼</span>
           </button>
-        ))}
+          {dropdownOpen && (
+            <div style={dropdownListStyle}>
+              {components.map((comp) => (
+                <div
+                  key={comp.id}
+                  onClick={() => handleSelect(comp.id)}
+                  style={dropdownItemStyle}
+                  onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                  onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                >
+                  {comp.name}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <div style={componentContainerStyle}>
-        <div style={componentTitleStyle}>
-          {components.find(c => c.id === activeComponent)?.name}
-        </div>
-        <div style={componentWrapperStyle}>
-          {ActiveComponent && <ActiveComponent />}
-        </div>
+        {ActiveComponent && <ActiveComponent />}
       </div>
     </div>
   );
